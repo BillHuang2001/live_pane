@@ -2,7 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.6.5]
+
+## [0.6.6] (2026-07-07)
+
+- Relax live_view version
+
+## [0.6.5] (2026-02-08)
 
 - Add imperative `resize` event to resize panes from the server [#17](https://github.com/giusdp/live_pane/pull/17).
 
