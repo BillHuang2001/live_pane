@@ -100,6 +100,31 @@ export function createGroupHook() {
       };
 
       paneGroupInstances.set(this.el.id, groupData);
+
+      this.handleEvent(
+        'change_layout',
+        ({ group_id, layout }: { group_id: string; layout: number[] }) => {
+          if (this.el.id === group_id) {
+            const paneConstraintsArray = groupData.paneDataArray
+              .get()
+              .map(p => p.constraints);
+
+            if (layout.length !== paneConstraintsArray.length) {
+              console.warn(
+                `[LivePane] Received layout with ${layout.length} panes, but group has ${paneConstraintsArray.length}. Ignoring.`
+              );
+              return;
+            }
+
+            const nextLayout = validatePaneGroupLayout({
+              layout,
+              paneConstraintsArray
+            });
+
+            groupData.layout.set(nextLayout);
+          }
+        }
+      );
     },
 
     destroyed() {
