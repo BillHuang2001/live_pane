@@ -394,6 +394,25 @@ var LiveMotion = (() => {
           unsubFromUpdateIsCollapsed
         };
         paneGroupInstances.set(this.el.id, groupData);
+        this.handleEvent(
+          "change_layout",
+          ({ group_id, layout: layout2 }) => {
+            if (this.el.id === group_id) {
+              const paneConstraintsArray = groupData.paneDataArray.get().map((p) => p.constraints);
+              if (layout2.length !== paneConstraintsArray.length) {
+                console.warn(
+                  `[LivePane] Received layout with ${layout2.length} panes, but group has ${paneConstraintsArray.length}. Ignoring.`
+                );
+                return;
+              }
+              const nextLayout = validatePaneGroupLayout({
+                layout: layout2,
+                paneConstraintsArray
+              });
+              groupData.layout.set(nextLayout);
+            }
+          }
+        );
       },
       destroyed() {
         var _a, _b, _c, _d;
